@@ -1,0 +1,42 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JokerTar/joker_blog_server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "basic-auth": "^2.0.1",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.13.1",
+    "koa-body": "^4.2.0",
+    "koa-router": "^10.0.0",
+    "koa-static": "^5.0.0",
+    "lodash": "^4.17.21",
+    "module-alias": "^2.2.2",
+    "mysql2": "^2.2.5",
+    "npm-check": "^5.9.2",
+    "require-directory": "^2.1.1",
+    "sequelize": "^6.6.2",
+    "validator": "^13.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "bugs": {
+    "url": "https://github.com/JokerTar/joker_blog_server/issues"
+  },
+  "homepage": "https://github.com/JokerTar/joker_blog_server#readme",
+  "_moduleAliases": {
+    "@"      : "."
+  }
+}
