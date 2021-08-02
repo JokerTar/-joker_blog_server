@@ -1,11 +1,19 @@
+require('module-alias/register')
+
 const Koa = require('koa')
-const koaBody = require('koa-body');
+const koaBody = require('koa-body')
+const koaStatic = require('koa-static')
+const exception = require('@mid/exception')
+const InitManager = require('@/core/init')
+
+const path = require('path')
 
 const app = new Koa()
-
+app.use(koaStatic(path.join(__dirname, 'public')))
+app.use(exception)
 app.use(koaBody({
     multipart:true, // 支持文件上传
-    encoding:'gzip',
+    // encoding:'gzip',
     formidable:{
       uploadDir:path.join(__dirname,'public/upload/'), // 设置文件上传目录
       keepExtensions: true,    // 保持文件的后缀
@@ -17,6 +25,8 @@ app.use(koaBody({
     }
   }))
 
-console.log(123)
+InitManager.initCore(app)
 
-app.listen(8080)
+require('@module/init')
+
+app.listen(3000)

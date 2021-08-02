@@ -37,6 +37,11 @@
   },
   "homepage": "https://github.com/JokerTar/joker_blog_server#readme",
   "_moduleAliases": {
-    "@"      : "."
+    "@": ".",
+    "@mid": "middlewares",
+    "@api": "app/api",
+    "@module": "app/modules",
+    "@core": "core",
+    "@validator": "app/validators/validator"
   }
 }
