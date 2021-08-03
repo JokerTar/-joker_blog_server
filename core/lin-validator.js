@@ -31,7 +31,8 @@
              body: ctx.request.body,
              query: ctx.request.query,
              path: ctx.params,
-             header: ctx.request.header
+             header: ctx.request.header,
+             auth: ctx.auth
          }
      }
  

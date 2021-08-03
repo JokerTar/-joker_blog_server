@@ -37,4 +37,22 @@ router.post('/info', new Auth().validateToken(), async (ctx, next) => {
     }
 })
 
+router.post('/auth', async (ctx, next) => {
+    const {id} = ctx.request.body
+    const r = await User.findOne({
+        where: {
+            id
+        },
+        attributes: {
+            exclude: ['password', 'created_time', 'updated_time', 'deleted_time']
+        }
+    })
+
+    ctx.body = {
+        data: r,
+        ok: true,
+        code: 200
+    }
+})
+
 module.exports = router

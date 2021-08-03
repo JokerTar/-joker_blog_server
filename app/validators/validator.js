@@ -107,7 +107,7 @@ class BlogValidator extends LinValidator{
     // }
 
     async validateUid(vals) {
-        const uid = vals.body.uid
+        const uid = vals.auth.uid
         if (!uid) throw new Error('作者不存在')
 
         const auth = await User.findOne({
@@ -199,7 +199,7 @@ class SearchValidator extends LinValidator{
             new Rule('isInt', 'page参数不符合规范', {
                 min: 0
             }),
-            new Rule('isOptional', '', 0)
+            // new Rule('isOptional', '', 0)
         ]
 
         this.currentPage = [
@@ -207,7 +207,7 @@ class SearchValidator extends LinValidator{
                 min: 1,
                 max: 20
             }),
-            new Rule('isOptional', '', 10)
+            // new Rule('isOptional', '', 10)
         ]
 
         this.keyWord = [
@@ -216,6 +216,11 @@ class SearchValidator extends LinValidator{
                 min: 1,
                 max: 16
             })
+        ]
+
+        this.order = [
+            new Rule('isOptional', '', ),
+            new Rule('isArray', 'keyWord参数不符合规范', [])
         ]
     }
 }
