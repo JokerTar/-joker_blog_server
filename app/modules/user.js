@@ -1,5 +1,6 @@
 const {Sequelize, Model} = require('sequelize')
 const {sequelize} = require('@core/db')
+const {NotFound, AuthFailed} = require('@/core/api-exception')
 const bcrypt = require('bcryptjs')
 
 class User extends Model {

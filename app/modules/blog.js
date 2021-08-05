@@ -55,10 +55,35 @@ class Blog extends Model {
     }
 
     static async fetchList(param = {}) {
-        const {page, currentPage, keyWord, uid, order} = param
+        const {page, currentPage, order, keyWord, uid, bids} = param
         let serachObj = {}
         let orderBy = ['created_time', 'DESC']
         if (uid) serachObj = {uid}
+        if (bids && bids.length) {
+            serachObj = {
+                ...serachObj,
+                id: {
+                    [Op.in]: bids
+                }
+            }
+        }
+        if (keyWord) {
+            serachObj = {
+                ...serachObj,
+                [Op.or]: [
+                    {
+                      title: {
+                        [Op.like]: `%${keyWord}%`
+                      }
+                    }
+                    // {
+                    //   description: {
+                    //     [Op.like]: `%${keyWord}%`
+                    //   }
+                    // }
+                ]
+            }
+        }
 
         const r = await Blog.findAndCountAll({
             where: {
@@ -86,9 +111,20 @@ class Blog extends Model {
             attributes: ['id', 'nikename', 'avatar', 'blog_number'],
         })
 
-        const result = list.map(item => {
+        const result = this.mapBlogList(list, u)
+
+        return {
+            result,
+            page,
+            currentPage,
+            total: r.count
+        }
+    }
+
+    static mapBlogList(blogs, users) {
+        return blogs.map(item => {
             let user = {}
-            u.forEach(sitem => {
+            users.forEach(sitem => {
                 if (sitem.id === item.uid) user = sitem
             })
 
@@ -103,13 +139,6 @@ class Blog extends Model {
                 auth_info: user
             }
         })
-
-        return {
-            result,
-            page,
-            currentPage,
-            total: r.count
-        }
     }
 }
 
@@ -135,6 +164,10 @@ Blog.init({
         type: Sequelize.INTEGER,
         defaultValue: 0
     },
+    // collectionNumber: {
+    //     type: Sequelize.INTEGER,
+    //     defaultValue: 0
+    // }
 },{
     sequelize,
     tableName: 'blog'

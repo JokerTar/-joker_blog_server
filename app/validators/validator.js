@@ -225,6 +225,36 @@ class SearchValidator extends LinValidator{
     }
 }
 
+class CommentValidator extends LinValidator{
+    constructor() {
+        super()
+        this.rootid = [
+            new Rule('isOptional', '', ),
+            new Rule('isLength', 'rootid不符合规范', {
+                min: 1
+            })
+        ]
+
+        this.replyid = [
+            new Rule('isOptional', '', ),
+            new Rule('isLength', 'replyid不符合规范', {
+                min: 1
+            })
+        ]
+
+        this.bid = [
+            new Rule('isLength', 'bid必填', {
+                min: 1
+            })
+        ]
+        this.content = [
+            new Rule('isLength', '评论格式不正确', {
+                min: 1
+            })
+        ]
+    }
+}
+
 module.exports = {
     RegisterValidator,
     TokenValidator,
@@ -233,5 +263,6 @@ module.exports = {
     DeleteValidator,
     UpdateUserValidator,
     ViewValidator,
-    SearchValidator
+    SearchValidator,
+    CommentValidator
 }

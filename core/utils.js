@@ -48,7 +48,41 @@ const generateToken = (uid, scope = 2) => {
     return token
 }
 
+const listToTree = (root, arr, { id, rootid, child }, result = []) => {
+    const list = result
+
+    if (!root) {
+      arr.forEach(item => {
+        listToTree(item, arr, { id, rootid, child }, list)
+      })
+    } else {
+      if (!root[rootid]) {
+        list.push({
+          ...root,
+          [child]: getChild(root, arr.filter(item => item[rootid]), { id, rootid, child })
+        })
+      }
+    }
+
+    return list
+}
+
+const getChild = (root, arr, { id, rootid, child }) => {
+const list = []
+
+arr.forEach(item => {
+    if (item[rootid] === root[id]) {
+        list.push({
+            ...item,
+            // [child]: getChild(item, arr.filter(item => item[rootid]), { id, rootid, child })
+        })
+    }
+})
+return list
+}
+
 module.exports = {
     findMembers,
-    generateToken
+    generateToken,
+    listToTree
 }
