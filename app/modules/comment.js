@@ -1,20 +1,20 @@
 const { Sequelize, Model, Op } = require('sequelize')
 const {sequelize} = require('@core/db')
-const {Blog} = require('@module/blog')
-const {Like} = require('@module/like')
 const {User} = require('@module/user')
 const {listToTree} = require('@/core/utils')
 
 class Comment extends Model {
     static async addComment(param = {}, uid) {
-        const {rootid} = param
+        const {Blog} = require('@module/blog')
+
+        const {bid} = param
         sequelize.transaction(async t => {
             await Comment.create({
                 ...param,
                 uid
             })
 
-            await Blog.increment('comments_number', {by: 1, where: {id: rootid}, transaction: t})
+            await Blog.increment('comments_number', {by: 1, where: {id: bid}, transaction: t})
         })
     }
 
@@ -31,6 +31,8 @@ class Comment extends Model {
     }
 
     static async fetchComment(param = {}, uid) {
+        const {Like} = require('@module/like')
+
         const {page, currentPage, bid} = param
         let search = {}
         if (uid) search = {uid}
@@ -38,6 +40,7 @@ class Comment extends Model {
             where: {
                 bid
             },
+            order: [['created_time', 'DESC']],
             limit: currentPage,
             offset: (page - 1) * currentPage
         })

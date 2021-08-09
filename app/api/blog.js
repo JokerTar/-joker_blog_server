@@ -19,9 +19,9 @@ router.post('/list', async (ctx, next) => {
     }
 })
 
-router.post('/view', async (ctx, next) => {
-    const {bid, uid} = ctx.request.body
-    const r = await Blog.view(bid, uid)
+router.post('/view', new Auth().getToken(),  async (ctx, next) => {
+    const {bid} = ctx.request.body
+    const r = await Blog.view(bid, ctx.auth.uid)
 
     ctx.body = {
         data: r,

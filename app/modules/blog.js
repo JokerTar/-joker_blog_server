@@ -1,5 +1,6 @@
 const {Sequelize, Model, Op} = require('sequelize')
 const {sequelize} = require('@core/db')
+const {Like} = require('@module/like')
 const {User} = require('@module/user')
 
 class Blog extends Model {
@@ -28,7 +29,9 @@ class Blog extends Model {
         })
     }
 
-    static async view(bid, uid) {
+    static async view(bid, id) {
+        const {Collection} = require('@module/collection')
+
         return sequelize.transaction(async t => {
             const v = await Blog.findOne({
                 where: {
@@ -40,22 +43,44 @@ class Blog extends Model {
 
             const u = await User.findOne({
                 where: {
-                    id: uid
+                    id: v.uid
                 },
                 attributes: {
                     exclude: ['deleted_time', 'password', 'created_time', 'updated_time']
                 }
             })
 
+            let l = false
+            let c = false
+            if (id) {
+                l = await Like.findOne({
+                    where: {
+                        bid: v.id,
+                        uid: id
+                    }
+                })
+
+                c = await Collection.findOne({
+                    where: {
+                        bid: v.id,
+                        uid: id
+                    }
+                })
+            }
+
             return {
                 auth_info: u,
-                article_info: v
+                article_info: {
+                    ...v.dataValues,
+                    is_like: !!l,
+                    is_collection: !!c
+                }
             }
         })
     }
 
     static async fetchList(param = {}) {
-        const {page, currentPage, order, keyWord, uid, bids} = param
+        const {page, currentPage, order, keyWord, uid, bids, cids} = param
         let serachObj = {}
         let orderBy = ['created_time', 'DESC']
         if (uid) serachObj = {uid}
@@ -67,6 +92,16 @@ class Blog extends Model {
                 }
             }
         }
+
+        if (cids && cids.length) {
+            serachObj = {
+                ...serachObj,
+                cid: {
+                    [Op.in]: cids
+                }
+            }
+        }
+
         if (keyWord) {
             serachObj = {
                 ...serachObj,
@@ -149,6 +184,7 @@ Blog.init({
         primaryKey: true
     },
     uid: Sequelize.INTEGER,
+    cid: Sequelize.INTEGER,
     title: Sequelize.STRING,
     content: Sequelize.TEXT,
     pageUrl: Sequelize.STRING,
@@ -164,10 +200,10 @@ Blog.init({
         type: Sequelize.INTEGER,
         defaultValue: 0
     },
-    // collectionNumber: {
-    //     type: Sequelize.INTEGER,
-    //     defaultValue: 0
-    // }
+    collectionNumber: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+    }
 },{
     sequelize,
     tableName: 'blog'

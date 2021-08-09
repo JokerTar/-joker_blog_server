@@ -150,13 +150,6 @@ class FocusValidator extends LinValidator{
 class UpdateUserValidator extends LinValidator{
     constructor() {
         super()
-
-        this.id = [
-            new Rule('isLength', 'id必填', {
-                min: 1
-            })
-        ]
-
         this.nikename = [
             new Rule('isOptional', '', ),
             new Rule('isLength', '长度不符合规范', {
@@ -166,10 +159,58 @@ class UpdateUserValidator extends LinValidator{
 
         this.avatar = [
             new Rule('isOptional', '', ),
-            new Rule('isLength', '图片地址不符合规范', {
+            new Rule('isLength', '图片符合规范', {
                 min: 1
             })
         ]
+
+        this.member_cover = [
+            new Rule('isOptional', '', ),
+            new Rule('isLength', '图片不符合规范', {
+                min: 1
+            })
+        ]
+
+        this.signature = [
+            new Rule('isOptional', '', ),
+            new Rule('isLength', '不超过20个汉字或40个字符', {
+                min: 1,
+                max: 40
+            })
+        ]
+
+        this.tag = [
+            new Rule('isOptional', '', ),
+            new Rule('isLength', '不超过160个汉字或320个字符', {
+                min: 1,
+                max: 320
+            })
+        ]
+
+        this.qq = [
+            new Rule('isOptional', '', ),
+            new Rule('isLength', 'qq不符合规范', {
+                min: 1,
+                max: 18
+            })
+        ]
+
+        this.wx = [
+            new Rule('isOptional', '', ),
+            new Rule('isLength', 'wx不符合规范', {
+                min: 1,
+                max: 18
+            })
+        ]
+    }
+
+    async validateGender(vals) {
+        const gender = vals.body.gender
+        const arr = ['男', '女']
+
+        if (gender && !arr.includes(gender)) {
+            throw new Error('请输入 男 女')
+        }
     }
 }
 
@@ -255,6 +296,110 @@ class CommentValidator extends LinValidator{
     }
 }
 
+class LikeValidator extends LinValidator{
+    constructor() {
+        super()
+
+        this.bid = [
+            new Rule('isLength', 'bid不符合规范', {
+                min: 1
+            })
+        ]
+
+        this.uid = [
+            new Rule('isOptional', '', ),
+            new Rule('isLength', 'uid不符合规范', {
+                min: 1
+            })
+        ]
+
+        this.type = [
+            new Rule('isLength', 'type不符合规范', {
+                min: 1
+            })
+        ]
+    }
+
+    async validateType(vals) {
+        const type = vals.body.type
+        const arr = [100, 200]
+
+        if (!arr.includes(type)) {
+            throw new Error('type不符合规范')
+        }
+    }
+}
+
+class UnlikeValidator extends LinValidator{
+    constructor() {
+        super()
+
+        this.bid = [
+            new Rule('isLength', 'bid不符合规范', {
+                min: 1
+            })
+        ]
+
+        this.type = [
+            new Rule('isLength', 'type不符合规范1', {
+                min: 1
+            })
+        ]
+    }
+
+    async validateType(vals) {
+        const type = vals.body.type
+        const arr = [100, 200]
+
+        if (!arr.includes(type)) {
+            throw new Error('type不符合规范')
+        }
+    }
+}
+
+class CollectionValidator extends LinValidator{
+    constructor() {
+        super()
+
+        this.bid = [
+            new Rule('isLength', 'bid不符合规范', {
+                min: 1
+            })
+        ]
+    }
+}
+
+class ColumnValidator extends LinValidator{
+    constructor() {
+        super()
+
+        this.title = [
+            new Rule('isLength', 'title不符合规范', {
+                min: 1
+            })
+        ]
+
+        this.introduce = [
+            new Rule('isLength', 'title不符合规范', {
+                min: 1
+            })
+        ]
+
+        this.cover = [
+            new Rule('isOptional', '', ),
+            new Rule('isLength', '图片符合规范', {
+                min: 1
+            })
+        ]
+    }
+}
+
+class ColumnManagerValidator extends LinValidator{
+    constructor() {
+        super()
+    }
+}
+
 module.exports = {
     RegisterValidator,
     TokenValidator,
@@ -264,5 +409,10 @@ module.exports = {
     UpdateUserValidator,
     ViewValidator,
     SearchValidator,
-    CommentValidator
+    CommentValidator,
+    LikeValidator,
+    UnlikeValidator,
+    CollectionValidator,
+    ColumnValidator,
+    ColumnManagerValidator
 }

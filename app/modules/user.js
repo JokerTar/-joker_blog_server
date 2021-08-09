@@ -18,6 +18,19 @@ class User extends Model {
 
         return user
     }
+
+    static async updateUser(param, uid) {
+        const r = User.update({
+            ...param
+        },
+        {
+            where: {
+                id: uid
+            }
+        })
+
+        return r
+    }
 }
 
 User.init({
@@ -41,15 +54,31 @@ User.init({
             this.setDataValue('password', psw)
         }
     },
-    gender: Sequelize.STRING,
+    gender: {
+        type: Sequelize.STRING,
+        defaultValue: '男'
+    },
     signature: Sequelize.STRING,
-    address1: Sequelize.STRING,
-    address2: Sequelize.STRING,
-    tag: Sequelize.STRING,
+    address1: {
+        type: Sequelize.STRING,
+        defaultValue: '北京'
+    },
+    address2: {
+        type: Sequelize.STRING,
+        defaultValue: '北京'
+    },
+    tag: {
+        type: Sequelize.STRING,
+        defaultValue: '前端开发'
+    },
     introduction: Sequelize.STRING,
     qq: Sequelize.STRING,
     wx: Sequelize.STRING,
     blogNumber: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+    },
+    columnNumber: {
         type: Sequelize.INTEGER,
         defaultValue: 0
     }

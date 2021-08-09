@@ -5,6 +5,7 @@ const router = new Router({
 
 const {User} = require('@module/user')
 const {Auth} = require('@mid/auth')
+const {UpdateUserValidator} = require('@validator')
 
 router.post('/register', async (ctx, next) => {
     const {email, password, nikename} = ctx.request.body
@@ -52,6 +53,17 @@ router.post('/auth', async (ctx, next) => {
         data: r,
         ok: true,
         code: 200
+    }
+})
+
+router.post('/update', new Auth().validateToken(), async (ctx, next) => {
+
+    const v = await new UpdateUserValidator().validate(ctx)
+    await User.updateUser(v.get('body'), v.get('auth.uid'))
+
+    ctx.body = {
+        code: 200,
+        ok: true
     }
 })
 
