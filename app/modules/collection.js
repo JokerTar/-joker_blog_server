@@ -22,14 +22,14 @@ class Collection extends Model {
                     uid
                 },
                 force: true
-            })
+            }, {transaction: t})
 
             await Blog.decrement('collection_number', {by: 1, where: {id: bid}, transaction: t})
         })
     }
 
     static async fetchCollectionBlog(param = {}) {
-        const { uid, page, currentPage, } = param
+        const { uid, page, currentPage, order } = param
         const c = await Collection.findAll({
             where: {
                 uid
@@ -44,6 +44,8 @@ class Collection extends Model {
             currentPage,
             total: 0
         }
+
+        delete param.uid
 
         const params = {
             ...param,

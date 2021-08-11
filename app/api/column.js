@@ -18,6 +18,17 @@ router.post('/add', new Auth().validateToken(), async (ctx, next) => {
     }
 })
 
+router.post('/update', new Auth().validateToken(), async (ctx, next) => {
+    const v = await new ColumnValidator().validate(ctx)
+
+    const r = await Column.updateColumn(v.get('body'), v.get('auth.uid'))
+
+    ctx.body = {
+        data: r,
+        code: 200
+    }
+})
+
 router.post('/delete', new Auth().validateToken(), async (ctx, next) => {
     const v = await new DeleteValidator().validate(ctx)
 
@@ -31,7 +42,18 @@ router.post('/delete', new Auth().validateToken(), async (ctx, next) => {
 
 router.post('/list', async (ctx, next) => {
     const {uid} = ctx.request.body
-    const r = await Column.fetchColumn(uid)
+    const v = await new SearchValidator().validate(ctx)
+    const r = await Column.fetchColumnList(v.get('body'), uid)
+
+    ctx.body = {
+        data: r,
+        code: 200
+    }
+})
+
+router.post('/info', async (ctx, next) => {
+    const {cid} = ctx.request.body
+    const r = await Column.fetchColumnInfo(cid)
 
     ctx.body = {
         data: r,
@@ -65,6 +87,16 @@ router.post('/manager/delete', new Auth().validateToken(), async (ctx, next) => 
     // const v = await new DeleteValidator().validate(ctx)
 
     const r = await ColumnManager.delete(ctx.request.body, ctx.auth.uid)
+
+    ctx.body = {
+        data: r,
+        code: 200
+    }
+})
+
+router.post('/manager/list', async (ctx, next) => {
+    const v = await new SearchValidator().validate(ctx)
+    const r = await ColumnManager.fetchBlog(v.get('body'))
 
     ctx.body = {
         data: r,

@@ -246,7 +246,7 @@ class SearchValidator extends LinValidator{
         this.currentPage = [
             new Rule('isInt', 'currentPage参数不符合规范', {
                 min: 1,
-                max: 20
+                max: 200
             }),
             // new Rule('isOptional', '', 10)
         ]
@@ -261,7 +261,10 @@ class SearchValidator extends LinValidator{
 
         this.order = [
             new Rule('isOptional', '', ),
-            new Rule('isArray', 'keyWord参数不符合规范', [])
+            new Rule('isLength', 'order参数不符合规范', {
+                min: 1,
+                max: 16
+            })
         ]
     }
 }
@@ -375,18 +378,18 @@ class ColumnValidator extends LinValidator{
 
         this.title = [
             new Rule('isLength', 'title不符合规范', {
-                min: 1
+                min: 1,
+                max: 50
             })
         ]
 
         this.introduce = [
             new Rule('isLength', 'title不符合规范', {
-                min: 1
+                min: 1, max: 150
             })
         ]
 
         this.cover = [
-            new Rule('isOptional', '', ),
             new Rule('isLength', '图片符合规范', {
                 min: 1
             })

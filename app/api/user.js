@@ -11,7 +11,8 @@ router.post('/register', async (ctx, next) => {
     const {email, password, nikename} = ctx.request.body
 
     await User.create({
-        email, password, nikename
+        email, password, nikename,
+        avatar: `${ctx.origin}/default/avatar.png`
     })
 
     ctx.body = {

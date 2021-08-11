@@ -80,24 +80,15 @@ class Blog extends Model {
     }
 
     static async fetchList(param = {}) {
-        const {page, currentPage, order, keyWord, uid, bids, cids} = param
+        const {page, currentPage, order, keyWord, uid, bids} = param
         let serachObj = {}
-        let orderBy = ['created_time', 'DESC']
+        let orderBy = [order || 'created_time', 'DESC']
         if (uid) serachObj = {uid}
         if (bids && bids.length) {
             serachObj = {
                 ...serachObj,
                 id: {
                     [Op.in]: bids
-                }
-            }
-        }
-
-        if (cids && cids.length) {
-            serachObj = {
-                ...serachObj,
-                cid: {
-                    [Op.in]: cids
                 }
             }
         }
@@ -121,9 +112,7 @@ class Blog extends Model {
         }
 
         const r = await Blog.findAndCountAll({
-            where: {
-                ...serachObj
-            },
+            where: serachObj,
             order: [orderBy],
             // attributes: ['content', 'deleted_time'],
             limit: currentPage, // 每页多少条
