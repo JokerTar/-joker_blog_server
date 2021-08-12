@@ -12,7 +12,7 @@ router.post('/register', async (ctx, next) => {
 
     await User.create({
         email, password, nikename,
-        avatar: `${ctx.origin}/default/avatar.png`
+        avatar: `https://www.beelz.cn/api/default/avatar.png`
     })
 
     ctx.body = {

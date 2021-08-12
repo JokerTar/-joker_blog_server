@@ -12,7 +12,8 @@ router.post('/', async (ctx, next) => {
     
     ctx.body = {
         file: {
-            path: `${ctx.origin}/upload/${basename}` // http://localhost:3000/upload/test.jpg
+            // path: `${ctx.origin}/upload/${basename}` // http://localhost:3000/upload/test.jpg
+            path: `https://www.beelz.cn/api/upload/${basename}` // http://localhost:3000/upload/test.jpg
         },
         code: 200
     }

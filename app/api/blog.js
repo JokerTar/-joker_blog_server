@@ -7,6 +7,13 @@ const router = new Router({
     prefix: '/blog'
 })
 
+router.get('/test', async (ctx, next) => {
+    ctx.body = {
+        data: 'succcess',
+        code: 200
+    }
+})
+
 
 router.post('/list', async (ctx, next) => {
     const v = await new SearchValidator().validate(ctx)
@@ -29,11 +36,33 @@ router.post('/view', new Auth().getToken(),  async (ctx, next) => {
     }
 })
 
+router.post('/detail', new Auth().getToken(),  async (ctx, next) => {
+    const {bid} = ctx.request.body
+    const r = await Blog.fetchDetail(bid, ctx.auth.uid)
+
+    ctx.body = {
+        data: r,
+        code: 200
+    }
+})
+
 router.post('/new',new Auth().validateToken(), async (ctx, next) => {
     const {uid} = ctx.auth
     const v = await new BlogValidator().validate(ctx)
 
     const r = await Blog.addBlog(v.get('body'), uid)
+
+    ctx.body = {
+        data: r,
+        code: 200
+    }
+})
+
+router.post('/update',new Auth().validateToken(), async (ctx, next) => {
+    const {uid} = ctx.auth
+    const v = await new BlogValidator().validate(ctx)
+
+    const r = await Blog.updateBlog(v.get('body'), uid)
 
     ctx.body = {
         data: r,

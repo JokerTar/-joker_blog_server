@@ -16,6 +16,20 @@ class Blog extends Model {
         })
     }
 
+    static async updateBlog(param, uid) {
+        const {id} = param
+        const r = await Blog.update({
+            ...param
+        }, {
+            where: {
+                id,
+                uid
+            }
+        })
+
+        return r
+    }
+
     static async deleteBlog(bid, uid) {
         return sequelize.transaction(async (t) => {
             const r = await Blog.destroy({
@@ -77,6 +91,17 @@ class Blog extends Model {
                 }
             }
         })
+    }
+
+    static async fetchDetail(bid, id) {
+        const v = await Blog.findOne({
+            where: {
+                id: bid,
+                uid: id
+            }
+        })
+
+        return v
     }
 
     static async fetchList(param = {}) {
