@@ -27,8 +27,10 @@ class ColumnManager extends Model{
                 force: true
             }, {transaction: t})
             const v = await ColumnManager.bulkCreate(r, {transaction: t})
-            await Column.increment('blog_number', {by: bids.length, where: {id: cid}, transaction: t})
-    
+            // await Column.increment('blog_number', {by: bids.length, where: {id: cid}, transaction: t})
+            await Column.update({
+                blogNumber: bids.length
+            }, {where: {id: cid}, transaction: t})
             return v
         })
     }
