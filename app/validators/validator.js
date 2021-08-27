@@ -62,6 +62,7 @@ class TokenValidator extends LinValidator{
         ]
 
         this.password = [
+            new Rule('isOptional', '', ),
             new Rule('isLength', '不符合长度规范', {
                 min: 4,
                 max: 32

@@ -12,5 +12,10 @@ module.exports = {
     security: {
         secretKey: 'justtar23098^&!@',
         expiresIn: 60*60*6
+    },
+    wx: {
+        appId: 'wxcafd9336c5ac01c5',
+        appSecret: 'b5575c83229975a989839fd0739cdc79',
+        loginUrl: 'https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code'
     }
 }

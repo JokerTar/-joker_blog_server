@@ -31,6 +31,22 @@ class User extends Model {
 
         return r
     }
+
+    static async getUserByOpenid(openid) {
+        const u = User.findOne({
+            where: {
+                openid
+            }
+        })
+
+        return u
+    }
+
+    static async registerUserByOpenid(param) {
+        return User.create({
+            ...param
+        })
+    }
 }
 
 User.init({
@@ -39,6 +55,7 @@ User.init({
         primaryKey: true,
         autoIncrement: true
     },
+    openid: Sequelize.STRING,
     avatar: Sequelize.STRING,
     memberCover: Sequelize.STRING,
     nikename: Sequelize.STRING,
