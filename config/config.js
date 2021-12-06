@@ -3,7 +3,7 @@ module.exports = {
     database: {
         dbName: 'beelz',
         user: 'root',
-        password: 'TT12345678',
+        password: 'Tan731429)', // <QiU6K(sh9ox
         host: '8.136.209.34',
         // password: '12345678',
         // host: 'localhost',

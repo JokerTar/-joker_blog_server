@@ -174,7 +174,7 @@ class Blog extends Model {
         return blogs.map(item => {
             let user = {}
             users.forEach(sitem => {
-                if (sitem.id === item.uid) user = sitem
+                if (sitem.id == item.uid) user = sitem
             })
 
             let brief_content
@@ -184,6 +184,9 @@ class Blog extends Model {
 
             return {
                 ...item.dataValues,
+                viewNumber: item.dataValues.viewNumber || 0,
+                likeNumber: item.dataValues.likeNumber || 0,
+                commentsNumber: item.dataValues.commentsNumber || 0,
                 content: brief_content,
                 auth_info: user
             }
